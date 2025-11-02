@@ -3,7 +3,7 @@
 A fully containerized Apache Spark cluster with JupyterLab for distributed data processing and interactive development.
 
 <p align="center">
-    <img src="png/spark.png" width="800"/>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Apache_Spark_logo.svg/1200px-Apache_Spark_logo.svg.png" width="800"/>
 </p>
 
 ## 📋 Table of Contents
