@@ -74,26 +74,13 @@ curl -L -o data/customs_data.csv "https://huggingface.co/datasets/halltape/custo
 cd ../..
 ```
 
-### 3. Build Base Images
-
-Before starting the cluster, build the base Docker images:
-
-```bash
-chmod +x build-base-images.sh
-./build-base-images.sh
-```
-
-This script builds:
-- `base:latest` - Base Python environment
-- `spark-base:latest` - Spark installation with Hadoop
-
-### 4. Start the Cluster
+### 3. Start the Cluster
 
 ```bash
 docker-compose up -d
 ```
 
-### 5. Verify the Cluster is Running
+### 4. Verify the Cluster is Running
 
 ```bash
 docker-compose ps
@@ -160,18 +147,6 @@ Once the cluster is running, access the following web interfaces:
 | Spark Worker 1 UI | http://localhost:8081 | - |
 | Spark Worker 2 UI | http://localhost:8082 | - |
 | Spark Application UI | http://localhost:4040 | - |
-
-### Using Pre-built Images from Docker Hub
-
-If someone has already published the images, you can use them directly:
-
-```bash
-docker-compose -f docker-compose.yml up -d
-```
-
-This way you skip the build process and start the cluster immediately!
-
-***
 
 ## 📁 Project Structure
 
