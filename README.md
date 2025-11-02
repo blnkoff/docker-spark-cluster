@@ -88,8 +88,6 @@ docker-compose ps
 
 All containers should be in "Up" state.
 
-***
-
 ## 💻 Usage
 
 ### Accessing JupyterLab
@@ -170,7 +168,6 @@ docker-spark-cluster/
 └── README.md
 ```
 
-***
 
 ## 🛠️ Technologies
 
@@ -180,8 +177,6 @@ docker-spark-cluster/
 - **Python 3** - Programming language for PySpark
 - **Docker** - Containerization platform
 - **Docker Compose** - Multi-container orchestration
-
-***
 
 ## 🙏 Acknowledgments
 
