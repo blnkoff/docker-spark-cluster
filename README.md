@@ -14,11 +14,8 @@ A fully containerized Apache Spark cluster with JupyterLab for distributed data 
 - [Quick Start](#quick-start)
 - [Usage](#usage)
 - [Access URLs](#access-urls)
-- [Docker Hub](#docker-hub)
 - [Project Structure](#project-structure)
 - [Technologies](#technologies)
-
-***
 
 ## 🔍 Overview
 
@@ -29,8 +26,6 @@ This project provides a ready-to-use Apache Spark cluster running in Docker cont
 - Pre-configured networking and volume mounts
 
 Perfect for local development, testing, and learning distributed data processing with Apache Spark.
-
-***
 
 ## 🏗️ Architecture
 
@@ -45,8 +40,6 @@ The cluster consists of 4 Docker containers:
 
 **Total Cluster Capacity:** 2 cores, 2GB memory
 
-***
-
 ## ✨ Features
 
 - **Dockerized Setup** - Easy deployment with Docker Compose
@@ -56,16 +49,12 @@ The cluster consists of 4 Docker containers:
 - **Shared Workspace** - Persistent volume for notebooks and data
 - **Pre-configured** - Ready to run Spark jobs out of the box
 
-***
-
 ## 📦 Prerequisites
 
 - Docker (version 20.10+)
 - Docker Compose (version 2.0+)
 - At least 4GB of available RAM
 - 10GB of free disk space
-
-***
 
 ## 🚀 Quick Start
 
@@ -160,8 +149,6 @@ To remove volumes as well:
 docker-compose down -v
 ```
 
-***
-
 ## 🌐 Access URLs
 
 Once the cluster is running, access the following web interfaces:
@@ -174,28 +161,12 @@ Once the cluster is running, access the following web interfaces:
 | Spark Worker 2 UI | http://localhost:8082 | - |
 | Spark Application UI | http://localhost:4040 | - |
 
-***
-
-## 🐳 Docker Hub
-
-### Publishing Images to Docker Hub
-
-To share your images on Docker Hub, use the provided script:
-
-```bash
-chmod +x push-to-dockerhub.sh
-./push-to-dockerhub.sh your-dockerhub-username
-```
-
-For detailed instructions, see [DOCKERHUB_GUIDE.md](DOCKERHUB_GUIDE.md).
-
 ### Using Pre-built Images from Docker Hub
 
 If someone has already published the images, you can use them directly:
 
 ```bash
-# Edit docker-compose.hub.yml and replace YOUR_DOCKERHUB_USERNAME with the actual username
-docker-compose -f docker-compose.hub.yml up -d
+docker-compose -f docker-compose.yml up -d
 ```
 
 This way you skip the build process and start the cluster immediately!
@@ -216,11 +187,10 @@ docker-spark-cluster/
 │   └── workspace/
 │       ├── data/              # Datasets directory
 │       └── spark.ipynb        # Sample notebook
-├── docker-compose.yml         # Cluster configuration (build locally)
-├── docker-compose.hub.yml     # Cluster configuration (use Docker Hub images)
+├── docker-compose.yml         # Cluster configuration 
+├── docker-compose.local.yml     # Cluster configuration (build locally)
 ├── build-base-images.sh       # Base images build script
 ├── push-to-dockerhub.sh       # Docker Hub push script
-├── DOCKERHUB_GUIDE.md         # Docker Hub instructions (Russian)
 ├── .gitignore
 └── README.md
 ```
