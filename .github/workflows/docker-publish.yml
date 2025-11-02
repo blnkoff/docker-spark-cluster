@@ -1,0 +1,23 @@
+name: Publish Docker Images
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Push images
+        run: |
+          chmod +x push-to-dockerhub.sh
+          ./push-to-dockerhub.sh ${{ secrets.DOCKERHUB_USERNAME }}

@@ -1,0 +1,60 @@
+services:
+  jupyterlab:
+    build:
+      context: ./build
+      dockerfile: docker/jupyterlab/Dockerfile
+      args:
+        - spark_version=3.5.7
+        - jupyterlab_version=4.3.3
+    container_name: jupyterlab
+    ports:
+      - 8888:8888
+      - 4040:4040
+    volumes:
+      - ./build/workspace:/opt/workspace
+    command: jupyter lab --ip='*' --allow-root --no-browser --ServerApp.token='hello_world' --ServerApp.password=''
+  spark-master:
+    build:
+      context: ./build
+      dockerfile: docker/spark-master/Dockerfile
+      args:
+        - spark_version=3.5.7
+    container_name: spark-master
+    ports:
+      - 8080:8080
+      - 7077:7077
+    volumes:
+      - ./build/workspace:/opt/workspace
+  spark-worker-1:
+    build:
+      context: ./build
+      dockerfile: docker/spark-worker/Dockerfile
+      args:
+        - spark_version=3.5.7
+    container_name: spark-worker-1
+    environment:
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1g
+    ports:
+      - 8081:8081
+    volumes:
+      - ./build/workspace:/opt/workspace
+    depends_on:
+      - spark-master
+  spark-worker-2:
+    build:
+      context: ./build
+      dockerfile: docker/spark-worker/Dockerfile
+      args:
+        - spark_version=3.5.7
+    container_name: spark-worker-2
+    environment:
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1g
+    ports:
+      - 8082:8081
+    volumes:
+      - ./build/workspace:/opt/workspace
+    depends_on:
+      - spark-master
+  
