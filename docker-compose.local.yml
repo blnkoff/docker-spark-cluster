@@ -7,12 +7,13 @@ services:
         - spark_version=3.5.7
         - jupyterlab_version=4.3.3
     container_name: jupyterlab
+    environment:
+      - JUPYTER_TOKEN=hello_world
     ports:
       - 8888:8888
       - 4040:4040
     volumes:
       - ./build/workspace:/opt/workspace
-    command: jupyter lab --ip='*' --allow-root --no-browser --ServerApp.token='hello_world' --ServerApp.password=''
   spark-master:
     build:
       context: ./build

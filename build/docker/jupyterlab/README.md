@@ -19,6 +19,7 @@ This Docker image provides a fully configured JupyterLab environment with PySpar
 - **Python 3.13** - Latest Python runtime
 - **Pre-configured** - Ready to connect to Spark cluster out of the box
 - **Shared Workspace** - Persistent volume for notebooks and data
+- **Security** - Runs as non-privileged user `jovyan` without system or Python package installation rights
 
 ## Usage
 
@@ -108,6 +109,14 @@ spark.stop()
 ## Environment Variables
 
 - `SHARED_WORKSPACE` - Path to shared workspace directory (default: `/opt/workspace`)
+- `JUPYTER_TOKEN` - Authentication token for JupyterLab access (default: empty, meaning token required)
+
+## Security
+
+The container runs with a non-privileged user `jovyan` (UID 1000) for enhanced security:
+- **No root access** - Cannot install system packages (apt, dpkg)
+- **No sudo privileges** - Limited to user-level operations only
+- **Workspace access** - Full read/write access to `/opt/workspace` for notebooks and data
 
 ## Volumes
 
@@ -118,12 +127,30 @@ spark.stop()
 - `spark_version` - Apache Spark version (default: `3.5.7`)
 - `jupyterlab_version` - JupyterLab version (default: `4.3.3`)
 
+## Extending the Image
+
+You can inherit from this image to add additional Python packages. Since `pip` is preserved for root user, you can install packages in derived images:
+
+```dockerfile
+FROM blnkoff/spark-jupyter:latest
+
+# Switch to root to install additional packages
+USER root
+
+# Install additional Python packages
+RUN pip3 install pandas==2.0.0 numpy==1.24.0 scikit-learn==1.3.0
+
+# Switch back to jovyan user
+USER jovyan
+```
+
+This approach allows you to customize the image while maintaining security - the jovyan user still cannot install packages at runtime.
+
 ## Base Image
 
 Built on top of the `base` image which includes:
 - OpenJDK 17
 - Python 3.13
-- R base
 
 ## GitHub Repository
 
