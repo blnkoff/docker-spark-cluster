@@ -1,4 +1,4 @@
-ARG debian_buster_image_tag=17-jdk-slim
+ARG debian_buster_image_tag=17.0.1-jdk-slim
 FROM openjdk:${debian_buster_image_tag}
 
 # -- Layer: OS + Python 3.13
