@@ -12,6 +12,7 @@ A fully containerized Apache Spark cluster with JupyterLab for distributed data 
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
+- [AWS S3 Support](#aws-s3-support-optional)
 - [Usage](#usage)
 - [Access URLs](#access-urls)
 - [Project Structure](#project-structure)
@@ -48,6 +49,7 @@ The cluster consists of 4 Docker containers:
 - **Scalable Architecture** - Easy to add more worker nodes
 - **Shared Workspace** - Persistent volume for notebooks and data
 - **Pre-configured** - Ready to run Spark jobs out of the box
+- **AWS S3 Support** - Optional AWS-enabled variant with S3 integration
 
 ## 📦 Prerequisites
 
@@ -87,6 +89,56 @@ docker-compose ps
 ```
 
 All containers should be in "Up" state.
+
+## ☁️ AWS S3 Support (Optional)
+
+This project includes an AWS-enabled variant with S3 support for reading and writing data from Amazon S3 or S3-compatible storage.
+
+### Building AWS-Enabled Images
+
+To build the AWS variant with S3 support:
+
+```bash
+# Build base images with AWS libraries
+./build-base-images.sh aws
+
+# Start the cluster with AWS configuration
+cp env.aws.example .env
+# Edit .env with your AWS credentials
+docker-compose -f docker-compose.aws.yml up -d
+```
+
+### Using S3 in Spark
+
+With the AWS-enabled variant, you can access S3 buckets:
+
+```python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("S3 Example") \
+    .master("spark://spark-master:7077") \
+    .config("spark.hadoop.fs.s3a.access.key", "YOUR_ACCESS_KEY") \
+    .config("spark.hadoop.fs.s3a.secret.key", "YOUR_SECRET_KEY") \
+    .config("spark.hadoop.fs.s3a.endpoint", "s3.amazonaws.com") \
+    .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
+    .getOrCreate()
+
+# Read from S3
+df = spark.read.csv("s3a://your-bucket/path/to/file.csv", header=True)
+df.show()
+
+# Write to S3
+df.write.mode("overwrite").csv("s3a://your-bucket/output/")
+```
+
+### AWS Libraries Included
+
+The AWS variant includes:
+- **hadoop-aws-3.3.4.jar** - Hadoop AWS connector
+- **aws-java-sdk-bundle-1.12.262.jar** - AWS SDK for Java
+
+For more details, see [build/docker/spark-base/README.md](build/docker/spark-base/README.md)
 
 ## 💻 Usage
 
@@ -153,17 +205,19 @@ docker-spark-cluster/
 ├── build/
 │   ├── docker/
 │   │   ├── base/              # Base Python image
-│   │   ├── spark-base/        # Spark installation
+│   │   ├── spark-base/        # Spark installation (with AWS variant support)
 │   │   ├── jupyterlab/        # JupyterLab image
 │   │   ├── spark-master/      # Spark master node
 │   │   └── spark-worker/      # Spark worker nodes
 │   └── workspace/
 │       ├── data/              # Datasets directory
 │       └── spark.ipynb        # Sample notebook
-├── docker-compose.yml         # Cluster configuration 
-├── docker-compose.local.yml     # Cluster configuration (build locally)
-├── build-base-images.sh       # Base images build script
-├── push-to-dockerhub.sh       # Docker Hub push script
+├── docker-compose.yml         # Standard cluster configuration 
+├── docker-compose.aws.yml     # AWS-enabled cluster configuration
+├── docker-compose.local.yml   # Cluster configuration (build locally)
+├── build-base-images.sh       # Base images build script (supports AWS variant)
+├── push-to-dockerhub.sh       # Docker Hub push script (supports AWS variant)
+├── env.aws.example            # Example AWS credentials file
 ├── .gitignore
 └── README.md
 ```
