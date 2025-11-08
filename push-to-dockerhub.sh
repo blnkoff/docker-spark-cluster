@@ -82,6 +82,7 @@ docker build \
 echo "Building spark-master image..."
 docker build \
   --build-arg spark_version=3.5.7 \
+  --build-arg spark_base_image=spark-base:latest${TAG_SUFFIX} \
   -t spark-master:latest \
   -f build/docker/spark-master/Dockerfile \
   build/
@@ -89,6 +90,7 @@ docker build \
 echo "Building spark-worker image..."
 docker build \
   --build-arg spark_version=3.5.7 \
+  --build-arg spark_base_image=spark-base:latest${TAG_SUFFIX} \
   -t spark-worker:latest \
   -f build/docker/spark-worker/Dockerfile \
   build/

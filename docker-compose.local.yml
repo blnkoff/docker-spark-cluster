@@ -20,6 +20,7 @@ services:
       dockerfile: docker/spark-master/Dockerfile
       args:
         - spark_version=3.5.7
+        - spark_base_image=spark-base:latest
     container_name: spark-master
     ports:
       - 8080:8080
@@ -32,6 +33,7 @@ services:
       dockerfile: docker/spark-worker/Dockerfile
       args:
         - spark_version=3.5.7
+        - spark_base_image=spark-base:latest
     container_name: spark-worker-1
     environment:
       - SPARK_WORKER_CORES=1
@@ -48,6 +50,7 @@ services:
       dockerfile: docker/spark-worker/Dockerfile
       args:
         - spark_version=3.5.7
+        - spark_base_image=spark-base:latest
     container_name: spark-worker-2
     environment:
       - SPARK_WORKER_CORES=1

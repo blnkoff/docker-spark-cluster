@@ -1,4 +1,6 @@
-FROM spark-base
+ARG spark_base_image=spark-base:latest
+
+FROM ${spark_base_image}
 
 EXPOSE 8081
 
