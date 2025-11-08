@@ -6,18 +6,20 @@ inputs:
     required: true
   variant:
     required: true
+
 runs:
   using: 'composite'
   steps:
-    - uses: actions/checkout@v3
     - uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
     - run: |
         chmod +x build-base-images.sh
         ./build-base-images.sh ${{ inputs.variant }}
       shell: bash
+
     - run: |
         chmod +x push-to-dockerhub.sh
         ./push-to-dockerhub.sh ${{ secrets.DOCKERHUB_USERNAME }} ${{ inputs.version }} ${{ inputs.variant }}

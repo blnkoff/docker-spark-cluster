@@ -13,15 +13,13 @@ on:
         required: true
         default: 'standard'
         type: choice
-        options:
-          - standard
-          - aws
-          - both
+        options: [standard, aws, both]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4   
       - uses: ./.github/actions/publish
         with:
           version: ${{ github.event.inputs.version }}
