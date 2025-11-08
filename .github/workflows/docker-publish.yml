@@ -19,8 +19,10 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4   
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/publish
         with:
-          version: ${{ github.event.inputs.version }}
-          variant: ${{ github.event.inputs.variant }}
+          version:  ${{ github.event.inputs.version }}
+          variant:  ${{ github.event.inputs.variant }}
+          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub_token:    ${{ secrets.DOCKERHUB_TOKEN }}

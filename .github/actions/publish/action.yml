@@ -6,14 +6,18 @@ inputs:
     required: true
   variant:
     required: true
+  dockerhub_username:        # <— пробрасываем секреты как inputs
+    required: true
+  dockerhub_token:
+    required: true
 
 runs:
   using: 'composite'
   steps:
     - uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        username: ${{ inputs.dockerhub_username }}
+        password: ${{ inputs.dockerhub_token }}
 
     - run: |
         chmod +x build-base-images.sh
@@ -22,5 +26,5 @@ runs:
 
     - run: |
         chmod +x push-to-dockerhub.sh
-        ./push-to-dockerhub.sh ${{ secrets.DOCKERHUB_USERNAME }} ${{ inputs.version }} ${{ inputs.variant }}
+        ./push-to-dockerhub.sh ${{ inputs.dockerhub_username }} ${{ inputs.version }} ${{ inputs.variant }}
       shell: bash
