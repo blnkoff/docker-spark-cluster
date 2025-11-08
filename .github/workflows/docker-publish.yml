@@ -1,8 +1,28 @@
+name: Publish Docker Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag for images'
+        required: false
+        default: 'latest'
+        type: string
+      variant:
+        description: 'Build variant'
+        required: true
+        default: 'standard'
+        type: choice
+        options:
+          - standard
+          - aws
+          - both
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./github/actions/publish
+      - uses: ./.github/actions/publish
         with:
           version: ${{ github.event.inputs.version }}
           variant: ${{ github.event.inputs.variant }}
